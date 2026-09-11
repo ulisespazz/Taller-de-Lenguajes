@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # df = pd.read_csv(os.path.join(path, 'tiobe_index_feb_2026.csv'))
 
 # Leer el archivo CSV 
-df = pd.read_csv('tiobe_index_feb_2026.csv')
+df = pd.read_csv('Tp Data Set/tiobe_index_feb_2026.csv')
 
 print("="*50)
 print("Análisis Tiobe Index - Lenguajes de Programación")

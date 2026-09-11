@@ -1,0 +1,139 @@
+import math
+
+# Descuento precio
+def aplicar_descuento(precio, descuento):
+    return precio - precio * descuento / 100
+
+def aplicar_iva(precio, iva):
+    return precio + precio * iva / 100
+
+def aplicar(dicc, funcion):
+    precio_final = 0
+    for value in dicc.values():
+        precio_final += funcion(value.get('precio'), value.get('porcentaje'))
+    return precio_final
+print("="*100)
+print("Iva: ")
+print(aplicar({'1': {'precio': 100, 'porcentaje': 20}, '2': {'precio': 100, 'porcentaje': 21} }, aplicar_iva))
+print("\nDescuento: ")
+print(aplicar({'1': {'precio': 100, 'porcentaje': 20}, '2': {'precio': 100, 'porcentaje': 21} }, aplicar_descuento) )
+print("="*100)
+
+# Calculadora
+def calculadora():
+    numero = int(input('Número: '))
+    funcion = input('Función (sin, cos, tan, exp, log): ')
+    print("\nResultados: ")
+    for i in range(1, numero + 1):
+        print(f'{i} = {eval('math.' + funcion + '(' + str(i) + ')')})')
+
+calculadora()
+print("="*100)
+
+# Aplicar función
+def aplicar_funcion(funcion, lista):
+    lista_a_devolver = []
+    for elem in lista:
+        lista_a_devolver.append(funcion(elem))
+    return lista_a_devolver
+
+def incrementar_1(numero):
+    return numero + 1
+
+def par_impar(numero):
+    return 'par' if numero%2 == 0 else 'impar'
+print("Valores incrementados: ",  aplicar_funcion(incrementar_1, [1, 2, 3, 4, 5]))
+print("\nPar o impar: ", aplicar_funcion(par_impar, [1, 2, 3, 4, 5]))
+print("="*100)
+
+# Filtro true
+def filtrar_true(funcion_booleana, lista):
+    lista_a_devolver = []
+    for elem in lista:
+        if funcion_booleana(elem):
+            lista_a_devolver.append(elem)
+    return lista_a_devolver
+
+def es_par(numero):
+    return numero % 2 == 0
+print("Par: ",filtrar_true(es_par, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+
+def es_impar(numero):
+    return numero % 2 != 0
+print("\nImpar: ", filtrar_true(es_impar, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+print("="*100)
+
+# Diccionario palabras longitud
+def generar_dicc_palabras_longitud(frase):
+    return ({value: len(value) for value in frase.split()})
+print("Longitud palabras: ")
+print(generar_dicc_palabras_longitud('oid mortales el grito sagrado'))
+print("="*100)
+
+# Lista calificaciones
+def calificaciones(lista):
+    return list(map(lambda elem : ('aprobado' if elem >= 4 else 'desaprobado'), lista))
+print("calificaciones: ")
+print(calificaciones([8, 7, 2, 4]))
+print("="*100)
+
+# Diccionario calificaciones
+def calificaciones(dicc):
+    return dict(map(lambda kv : (mayusculas(kv[0]), 'aprobado' if kv[1] >= 4 else 'desaprobado'), dicc.items()))
+
+def mayusculas(nombre):
+    return nombre.upper()
+print("Diccionario de calificaciones: ")
+print(calificaciones({'matematicas': 8, 'ingles': 7, 'biologia': 2, 'lengua': 4}))
+print("="*100)
+
+# Diccionario calificaciones aprobadas
+def calificaciones_aprobadas(dicc):
+    dicc  = dict(map(lambda kv : (mayusculas(kv[0]), 'aprobado' if kv[1] >= 4 else 'desaprobado'), dicc.items()))
+    return dict(filter(aprobadas, dicc.items()))
+# Convierte el nombre de la materia a mayuscula
+def mayusculas(nombre):
+    return nombre.upper()
+
+def aprobadas(tupla):
+    return tupla[1] == 'aprobado' 
+print("Solo Aprobadas: ")
+print(calificaciones_aprobadas({'matematicas': 8, 'ingles': 7, 'biologia': 2, 'lengua': 4}))
+print("="*100)
+
+# Módulo vector
+from functools import reduce
+from math import sqrt
+
+def modulo_vector(lista):
+    x = pow(reduce(diferencia, lista[0]), 2)
+    y = pow(reduce(diferencia, lista[1]), 2)
+    return sqrt(x+y)
+
+def diferencia(x1, x2):
+    return x1 - x2
+print("Resultado: ", modulo_vector([[2, -3], [1, 2]]))
+print("="*100)
+
+#Valores atípicos
+from functools import reduce
+from math import sqrt
+
+def calcular_media(lista):
+    return reduce(lambda x, y : x + y, lista)/len(lista)
+
+def desviacion_tipica(lista):
+    media = calcular_media(lista)
+    lista = list(map(lambda x: pow(x - media, 2), lista))
+    desv  = reduce(lambda x, y : x + y, lista)
+    return sqrt(desv / (len(lista) - 1))
+
+def puntuacion_tipica(valor, lista):
+    return (valor - calcular_media(lista))/desviacion_tipica(lista)
+
+def valores_atipicos(lista):
+    return list(filter(lambda x : es_atipico(puntuacion_tipica(x, lista)), lista))
+
+def es_atipico(valor):
+    return valor > 3 or valor < -3
+print(valores_atipicos([1, 2, 3, 34]))
