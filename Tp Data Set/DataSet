@@ -1,0 +1,61 @@
+# import kagglehub
+import pandas as pd
+import matplotlib.pyplot as plt
+# import os
+
+# Descarga de datos desde Kaggle
+# path = kagglehub.dataset_download("zkskhurram/programming-language-tiobe-index-february-2026")
+# Leo el archivo y lo paso a DataFrame
+# df = pd.read_csv(os.path.join(path, 'tiobe_index_feb_2026.csv'))
+
+# Leer el archivo CSV 
+df = pd.read_csv('tiobe_index_feb_2026.csv')
+
+print("="*50)
+print("Análisis Tiobe Index - Lenguajes de Programación")
+
+# Exploración
+print("="*50)
+print("\n Primeros 5 Lenguajes:")# Primeros 5 lenguajes
+print(df.head())
+print("="*50)
+print("\n Estadisticas:")# Estadisticas
+print(df[['Rating_Pct', 'Change_Pct']].describe())
+print("="*50)
+print(f"\n Valores Nulos: {df.isnull().sum().sum()}")# Valores nulos
+print("="*50)
+print(f" Duplicados: {df.duplicated().sum()}")# Duplicados
+
+# Grafico del Top 20
+top20 = df.nlargest(20, 'Rating_Pct')# Tomo los 20 mayores
+
+plt.figure(figsize=(10,6))# defino tamaño
+plt.barh(top20['Language'], top20['Rating_Pct'], color='steelblue') 
+plt.xlabel('Rating (%)')
+plt.title('Top 20 Lenguajes - TIOBE Index 2026')
+for i, v in enumerate(top20['Rating_Pct']): # Agrega numeros a la barra
+    plt.text(v + 0.1, i, f'{v:.1f}%', va='center')
+plt.tight_layout()
+plt.show()
+
+# Analisis del Grafico
+print("\n" + "="*50)
+print("Analisis del Grafico")
+print("="*50)
+
+print(f"\n🔹 Lenguaje Dominante:") # Top 1
+print(f"{top20.iloc[0]['Language']} con {top20.iloc[0]['Rating_Pct']:.1f}%")
+
+print(f"\n🔹 Brecha 1ro vs 2do:") # resta del rating del segundo con el primero
+print(f"{top20.iloc[0]['Rating_Pct'] - top20.iloc[1]['Rating_Pct']:.1f} puntos")
+
+print(f"\n🔹 Lenguaje con mayor crecimiento:") # los 3 Lengujaes con mayor cambio positivo
+for _, row in df.nlargest(3, 'Change_Pct').iterrows():
+    print(f"+{row['Change_Pct']:.1f}% → {row['Language']}")
+
+print(f"\n🔹 Lenguajes con mayor declive:") # los 3 Lenguajes con mayor cambio negativo
+for _, row in df.nsmallest(3, 'Change_Pct').iterrows():
+    print(f"{row['Change_Pct']:.1f}% → {row['Language']}")
+
+print("\n" + "="*50)
+print("Analisis Completo")
