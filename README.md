@@ -5,7 +5,7 @@
 **Repositorio de trabajos prácticos y ejercicios de la materia**
 
 ![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)
-![Status](https://img.shields.io/badge/Estado-En%20desarrollo-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Estado-Terminado-success?style=for-the-badge)
 
 </div>
 
